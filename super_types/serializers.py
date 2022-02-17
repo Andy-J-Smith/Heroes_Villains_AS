@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Product
+from .models import SuperTypes
 
-class ProductSerializer(serializers.ModelSerializer):
+class SuperTypesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
+        model = SuperTypes
         fields = ['type']
