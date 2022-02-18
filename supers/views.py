@@ -9,6 +9,9 @@ from rest_framework.response import Response
 # Create your views here.
 @api_view(['GET', 'POST'])
 def supers_list(request):
+
+    super_param = request.query_params.get('super_type')
+    sort_param = request.query_params.get('sort')
     if request.method == 'GET':
         supers = Super.objects.all()
         serializer = SuperSerializer(supers, many=True)
@@ -19,9 +22,12 @@ def supers_list(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    print(super_param)
+    print(sort_param)
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def supers_detail(request, pk):
-    product = get_object_or_404(Super, pk=pk)
+    super = get_object_or_404(Super, pk=pk)
     if request.method == 'GET':
         serializer = SuperSerializer(super)
         return Response(serializer.data)
@@ -31,5 +37,5 @@ def supers_detail(request, pk):
         serializer.save()
         return Response(serializer.data)
     elif request.method == 'DELETE':
-        product.delete()
+        super.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

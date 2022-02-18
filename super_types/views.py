@@ -10,6 +10,8 @@ from .serializers import SuperTypesSerializer
 # Create your views here.
 @api_view(['GET'])
 def supers_type_list(request):
+    super_param = request.query_params.get('super_type')
+    sort_param = request.query_params.get('sort')
     if request.method == 'GET':
         supers_types = SuperTypes.objects.all()
         data_visualization = [item for item in supers_types]
