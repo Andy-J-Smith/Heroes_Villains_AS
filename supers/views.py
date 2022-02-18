@@ -1,6 +1,8 @@
 from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
-from rest_framework import status 
+from rest_framework import status
+
+import super_types 
 from .serializers import SuperSerializer
 from .models import Super
 from rest_framework.response import Response
@@ -8,22 +10,32 @@ from rest_framework.response import Response
 
 # Create your views here.
 @api_view(['GET', 'POST'])
-def supers_list(request):
 
-    super_param = request.query_params.get('super_type')
-    sort_param = request.query_params.get('sort')
-    if request.method == 'GET':
-        supers = Super.objects.all()
+def supers_list(request):
+    supers = Super.objects.all()
+    
+    if type in request.GET and request.GET['hero']:
+        hero = request.GET['hero']
+        types = supers.filter(super_types__icontains='hero')
+    elif type in request.GET and request.GET['hero']:
+        villain = request.GET['villain']
+        types = supers.filter(super_types__icontains='villain')
+        context = {'super_type':super_types}
+        return Response(request, context)
+    elif request.method == 'GET':
         serializer = SuperSerializer(supers, many=True)
+        return Response(serializer.data)
+    elif request.method == 'GET':
+        serializer = supers.filter(super_type__lookup_name='villain')
         return Response(serializer.data)
     elif request.method == 'POST':
         serializer = SuperSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
 
-    print(super_param)
-    print(sort_param)
+    
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def supers_detail(request, pk):

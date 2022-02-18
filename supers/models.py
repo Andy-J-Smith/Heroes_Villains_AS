@@ -12,5 +12,5 @@ class Super(models.Model):
     super_type = models.ForeignKey(SuperTypes, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.name} {self.alter_ego} {self.primary_ability} {self.secondary_ability} {self.catchphrase} {self.super_type}'
-        # return self.name
+        # return f'{self.name} {self.alter_ego} {self.primary_ability} {self.secondary_ability} {self.catchphrase} {self.super_type}'
+        return self.name, self.super_type
