@@ -12,5 +12,6 @@ from .serializers import SuperTypesSerializer
 def supers_type_list(request):
     if request.method == 'GET':
         supers_types = SuperTypes.objects.all()
+        data_visualization = [item for item in supers_types]
         serializer = SuperTypesSerializer(supers_types, many=True)
         return Response(serializer.data)
