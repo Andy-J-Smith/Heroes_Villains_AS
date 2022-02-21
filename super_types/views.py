@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from super_types import serializers
+import super_types
 from super_types.models import SuperTypes
 from .serializers import SuperTypesSerializer 
 
@@ -30,7 +31,7 @@ def super_type_detail(request, pk):
         serializer = SuperTypesSerializer(super_type)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = SuperTypesSerializer(super, data=request.data)
+        serializer = SuperTypesSerializer(super_type, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
